@@ -3,7 +3,7 @@
 int main() {
     double *result = NULL;
 
-    ERROR error = calculate_polynomial(3.0, &result, 4, -2.0, 1.0, -3.0, 0.0, 1.0);
+    ERROR error = calculate_polynomial(3.0, 0.001, &result, 4, -2.0, 1.0, -3.0, 0.0, 1.0);
 
     if (error == INVALID_MEMORY) {
         printf("INVALID_MEMORY\n");

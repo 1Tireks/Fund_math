@@ -13,7 +13,8 @@ double evaluate_polynomial_of_power(double argument, double *coefs, int max_powe
 
 }
 
-ERROR calculate_polynomial(double a, double **coefficients, int degree, ...) {
+ERROR calculate_polynomial(double a, double epsilon, double **coefficients, int degree, ...) {
+
     if (degree < 0) {
         return INVALID_INPUT;
     }
@@ -48,6 +49,10 @@ ERROR calculate_polynomial(double a, double **coefficients, int degree, ...) {
     for (int i = 0; i <= n; i++) {
 
         (*coefficients)[i] = evaluate_polynomial_of_power(a, start_coefficients, current_power);
+
+        if ((*coefficients)[i] < epsilon) {
+            (*coefficients)[i] = 0;
+        }
 
         if (i > 1) {
             multiply *= i;
