@@ -15,6 +15,6 @@ typedef enum {
     INVALID_MEMORY,
 } ERROR;
 
-ERROR sum_in_base(char** result, int base, int count_number, ...);
+ERROR calculate_polynomial(double a, double **coefficients, int degree, ...);
 
 #endif
