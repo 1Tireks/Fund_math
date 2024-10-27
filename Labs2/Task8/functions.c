@@ -120,6 +120,11 @@ ERROR sum_in_base(char** result, int base, int count_number, ...) {
 
     char* number_arg = va_arg(args, char*);
     char* number = strdup(number_arg);
+
+    if (number == NULL) {
+        return INVALID_INPUT;
+    }
+    
     int len_number = strlen(number);
 
     if (is_valid_number(base, &number)) {
@@ -193,7 +198,7 @@ ERROR sum_in_base(char** result, int base, int count_number, ...) {
 
     reverse(result, len_result);
     va_end(args);
-    
+
     return OK;
 
 }

@@ -14,7 +14,7 @@ int main() {
     free(result);
 
     printf("\n\ttest 2\n123 + 456 (notation 10)\nexpected result: 579\n");
-    error = sum_in_base(&result, 10, 2, "123", "456");
+    error = sum_in_base(&result, 10, 2, "123", "00000000456");
     if(error == OK) {
         printf("\t\t result: %s\n", result);
     } else {

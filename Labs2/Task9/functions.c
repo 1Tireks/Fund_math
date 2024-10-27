@@ -42,7 +42,7 @@ int is_finite_representation_in_base(double number, int base) {
         denominator /= i;
     }
 
-    for (int i = 3; i <= sqrt(denominator); i+=2) {
+    for (int i = 3; i*i <= denominator; i+=2) {
 
         if (denominator % i == 0 && base % i != 0) {
             return 0;
@@ -59,7 +59,7 @@ int is_finite_representation_in_base(double number, int base) {
 }
 
 ERROR check_finite_representation_in_base(double **result, int base, int *index, int count, ...) {
-    
+
     if (base < 2) {
         return INVALID_INPUT;
     }
@@ -80,7 +80,7 @@ ERROR check_finite_representation_in_base(double **result, int base, int *index,
         double number = va_arg(args, double);
 
         if (number > 1 - EPSILON || number < EPSILON) {
-            printf("fraction %lf is invalid\n", number);
+            printf("Число %lf инвалид\n", number);
             continue;
         }
 

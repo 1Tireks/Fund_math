@@ -4,7 +4,7 @@ int main() {
     double *result = NULL;
     int count = 0;
 
-    ERROR error = check_finite_representation_in_base(&result, 25, &count, 5, 0.04, 0.0400, 0.35, 0.08, 0.12);
+    ERROR error = check_finite_representation_in_base(&result, 10, &count, 5, 0.04, 0.0400, 0.35, 0.08, 0.12);
 
     if (error == INVALID_MEMORY) {
         printf("INVALID_MEMORY\n");
