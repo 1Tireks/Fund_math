@@ -71,7 +71,13 @@ ERROR binary_conversion(int r, const long long int number, char* result) {
 
     result[index] = '\0';
 
-    for (int i = 0, j = index - 1; i < (index >> 1); increment(&i)) {
+    decrement(&index);
+
+    int j = index;
+
+    increment(&index);
+
+    for (int i = 0; i < (index >> 1); increment(&i)) {
         char temp = result[i];
         result[i] = result[j];
         result[j] = temp;
