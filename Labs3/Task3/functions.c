@@ -32,8 +32,6 @@ ERROR read_info_from_file(FILE* file, Employer** result, int* size_result, int c
         return INVALID_MEMORY;
     }
 
-    capasity = 0;
-
     int count = 0;
 
     while((count = fscanf(file, "%u %20s %50s %lf", 
@@ -56,8 +54,6 @@ ERROR read_info_from_file(FILE* file, Employer** result, int* size_result, int c
             return INVALID_INPUT;
         }
 
-        printf("%d %d\n", *size_result, count);
-
         (*size_result)++;
 
         if (*size_result == capasity) {
@@ -74,8 +70,6 @@ ERROR read_info_from_file(FILE* file, Employer** result, int* size_result, int c
         }
 
     }
-
-    printf("%d %d\n", *size_result, count);
 
     if (*size_result == 0) {
        return INVALID_INPUT;
