@@ -6,9 +6,9 @@ int binary_remainder_of_division(int a, int r) {
 
 void increment(int *a) {
 
-    if (a == NULL) {
-        return INVALID_INPUT;
-    }
+    // if (a == NULL) {
+    //     return INVALID_INPUT;
+    // }
 
     int carry = 1;
 

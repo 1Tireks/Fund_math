@@ -1,7 +1,5 @@
 #include "main.h"
 
-void decrement(int *a);
-
 int main() {
 
     ERROR error = OK;
