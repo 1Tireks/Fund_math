@@ -32,7 +32,7 @@ ERROR read_info_from_file(FILE* file, Employer** result, int* size_result, int c
         return INVALID_MEMORY;
     }
 
-    int count = 0;
+    int count;
 
     while((count = fscanf(file, "%u %20s %50s %lf", 
                   &(*result)[*size_result].id, 
