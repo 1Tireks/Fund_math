@@ -6,6 +6,10 @@ int binary_remainder_of_division(int a, int r) {
 
 void increment(int *a) {
 
+    if (a == NULL) {
+        return INVALID_INPUT;
+    }
+
     int carry = 1;
 
     while (carry) {
@@ -18,9 +22,15 @@ void increment(int *a) {
 
     }
 
+    // return OK;
+
 }
 
 void decrement(int *a) {
+
+    // if (a == NULL) {
+    //     return INVALID_INPUT;
+    // }
 
     int carry = 1;
 
