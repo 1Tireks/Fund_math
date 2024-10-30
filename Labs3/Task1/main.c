@@ -6,7 +6,7 @@ int main() {
 
     ERROR error = OK;
     long long int number = 0;
-    char result[100];
+    char result[1];
 
     printf("Enter a number: ");
 
