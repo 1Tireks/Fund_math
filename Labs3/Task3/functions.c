@@ -149,7 +149,7 @@ ERROR save_employees(FILE* file, Employer** result, int size_result) {
     }
 
     for (int i = 0; i < size_result; i++) {
-        
+
         fprintf(file, "%d %s %s %.2f\n", (*result)[i].id, (*result)[i].FirstName, (*result)[i].SecondName, (*result)[i].salary);
     }
 

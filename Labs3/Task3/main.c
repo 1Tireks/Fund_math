@@ -61,20 +61,13 @@ int main(int argc, char* argv[]) {
 
         qsort(result, size_result, sizeof(Employer), compare_Employer);
 
-        Employer* temp = (Employer*)malloc(sizeof(Employer));
-
-        if (temp == NULL) {
-            remove_Emploeer(&result);
-            return INVALID_MEMORY;
-        }
+        Employer temp;
 
         for (int i = 0; i < size_result / 2; i++) {
-            *temp = result[i];
+            temp = result[i];
             result[i] = result[size_result - i - 1];
-            result[size_result - i - 1] = *temp;
+            result[size_result - i - 1] = temp;
         }
-
-        free(temp);
 
     } else if (argv[2][1] == 'a') {
 
