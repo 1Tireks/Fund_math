@@ -1,29 +1,35 @@
 #include "main.h"
 
-int valid_name(char* name) {
+ERROR valid_name(char* name, int* resultPtr) {
 
-    if (name == NULL || name[0] == '\0') {
+    if (name == NULL || name[0] == '\0' || resultPtr == NULL) {
         return INVALID_INPUT;
     }
 
     int i = 0;
     char c;
 
+    *resultPtr = 0;
+
     while ((c = name[i]) != '\0') {
 
         if (i == 0 && (c < 'A' || c > 'Z')) {
-            return 1;
+            *resultPtr = 1;
         } else if (i != 0 && (c < 'a' || c > 'z')) {
-            return 1;
+            *resultPtr = 1;
         }
 
         i++;
     }
 
-    return 0;
+    return OK;
 }
 
 ERROR read_info_from_file(FILE* file, Employer** result, int* size_result, int capasity) {
+
+    if (file == NULL || size_result == NULL) {
+        return INVALID_INPUT;
+    }
 
     *size_result = 0;
     *result = (Employer*)malloc(capasity * sizeof(Employer));
@@ -33,6 +39,7 @@ ERROR read_info_from_file(FILE* file, Employer** result, int* size_result, int c
     }
 
     int count;
+    ERROR error = OK;
 
     while((count = fscanf(file, "%u %20s %50s %lf", 
                   &(*result)[*size_result].id, 
@@ -40,11 +47,25 @@ ERROR read_info_from_file(FILE* file, Employer** result, int* size_result, int c
                   (*result)[*size_result].SecondName, 
                   &(*result)[*size_result].salary)) == 4) {
 
-        if ((*result)[*size_result].id < 0) {
+        int status;
+
+        error = valid_name((*result)[*size_result].FirstName, &status);
+
+        if (error != OK) {
+            return error;
+        }
+
+        if (status) {
             return INVALID_INPUT;
         }
 
-        if (valid_name((*result)[*size_result].FirstName) || valid_name((*result)[*size_result].SecondName)) {
+        error = valid_name((*result)[*size_result].SecondName, &status);
+
+        if (error != OK) {
+            return error;
+        }
+
+        if (status) {
             return INVALID_INPUT;
         }
 
@@ -62,7 +83,6 @@ ERROR read_info_from_file(FILE* file, Employer** result, int* size_result, int c
             Employer* for_realloc = (Employer*)realloc(*result, sizeof(Employer) * capasity);
 
             if (for_realloc == NULL) {
-                free(*result);
                 return INVALID_MEMORY;
             }
 
@@ -72,11 +92,11 @@ ERROR read_info_from_file(FILE* file, Employer** result, int* size_result, int c
     }
 
     if (*size_result == 0) {
-       return INVALID_INPUT;
+        return INVALID_INPUT;
     }
 
     if (count != 4 && count != -1) {
-       return INVALID_INPUT;
+        return INVALID_INPUT;
     }
 
     return OK;
@@ -120,14 +140,32 @@ int compare_Employer(const void* a, const void* b) {
 
 ERROR save_employees(FILE* file, Employer** result, int size_result) {
 
-    if (result == NULL) {
-        return INVALID_MEMORY;
+    if (file == NULL) {
+        return INVALID_INPUT;
+    }
+
+    if (result == NULL || *result == NULL) {
+        return INVALID_INPUT;
     }
 
     for (int i = 0; i < size_result; i++) {
+        
         fprintf(file, "%d %s %s %.2f\n", (*result)[i].id, (*result)[i].FirstName, (*result)[i].SecondName, (*result)[i].salary);
     }
 
     return OK;
 
+}
+
+ERROR remove_Emploeer(Employer** resultPtr) {
+
+    if (resultPtr == NULL || *resultPtr == NULL) {
+        return INVALID_INPUT;
+    }
+
+    free(*resultPtr);
+    *resultPtr = NULL;
+    resultPtr = NULL;
+
+    return OK;
 }

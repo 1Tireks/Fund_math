@@ -29,5 +29,6 @@ typedef struct {
 ERROR read_info_from_file(FILE* file, Employer** result, int* size_result, int capasity);
 ERROR save_employees(FILE* file, Employer** result, int size_result);
 int compare_Employer(const void* a, const void* b);
+ERROR remove_Emploeer(Employer** resultPtr);
 
 #endif

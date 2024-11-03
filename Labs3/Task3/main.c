@@ -15,10 +15,20 @@ int main(int argc, char* argv[]) {
     char* realpath1 = realpath(argv[1], NULL);
     char* realpath2 = realpath(argv[3], NULL);
 
-    if (!strcmp(realpath1, realpath2)) {
+    if (realpath1 == NULL || realpath2 == NULL) {
         printf("INVALID_INPUT\n");
         return INVALID_INPUT;
     }
+
+    if (!strcmp(realpath1, realpath2)) {
+        free(realpath1);
+        free(realpath2);
+        printf("INVALID_INPUT\n");
+        return INVALID_INPUT;
+    }
+
+    free(realpath1);
+    free(realpath2);
 
     ERROR error = OK;
     Employer* result = NULL;
@@ -35,10 +45,12 @@ int main(int argc, char* argv[]) {
 
     if (error == INVALID_INPUT) {
         fclose(input);
+        remove_Emploeer(&result);
         printf("INVALID_INPUT\n");
         return INVALID_INPUT;
     } else if (error == INVALID_MEMORY) {
         fclose(input);
+        remove_Emploeer(&result);
         printf("INVALID_MEMORY\n");
         return INVALID_MEMORY;
     }
@@ -50,6 +62,11 @@ int main(int argc, char* argv[]) {
         qsort(result, size_result, sizeof(Employer), compare_Employer);
 
         Employer* temp = (Employer*)malloc(sizeof(Employer));
+
+        if (temp == NULL) {
+            remove_Emploeer(&result);
+            return INVALID_MEMORY;
+        }
 
         for (int i = 0; i < size_result / 2; i++) {
             *temp = result[i];
@@ -69,21 +86,21 @@ int main(int argc, char* argv[]) {
     FILE* output = fopen(argv[3], "w");
 
     if (output == NULL) {
-        free(result);
+        remove_Emploeer(&result);
         return FILE_READING_ERROR;
     }
 
     error = save_employees(output, &result, size_result);
 
     if (error == INVALID_INPUT) {
-        free(result);
+        remove_Emploeer(&result);
         fclose(output);
         printf("INVALID_INPUT\n");
         return INVALID_INPUT;
     }
 
     fclose(output);
-    free(result);
+    remove_Emploeer(&result);
 
     return OK;
 
