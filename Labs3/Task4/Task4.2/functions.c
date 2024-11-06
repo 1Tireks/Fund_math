@@ -666,8 +666,6 @@ ERROR delete_Mail(Post** postPtr, int index, int* count_mail) {
     destroy_String(&(*postPtr)->mail_array[index]->postal_idPtr);
     (*postPtr)->mail_array[index]->postal_idPtr = NULL;
 
-    (*postPtr)->mail_array[index]->parcel_weight = 0;
-
     destroy_String(&(*postPtr)->mail_array[index]->recipients_addressPtr->cityPtr);
     (*postPtr)->mail_array[index]->recipients_addressPtr->cityPtr = NULL;
 
@@ -680,14 +678,13 @@ ERROR delete_Mail(Post** postPtr, int index, int* count_mail) {
     destroy_String(&(*postPtr)->mail_array[index]->recipients_addressPtr->postal_codePtr);
     (*postPtr)->mail_array[index]->recipients_addressPtr->postal_codePtr = NULL;
 
+    free((*postPtr)->mail_array[index]->recipients_addressPtr);
+    (*postPtr)->mail_array[index]->recipients_addressPtr = NULL;
+
     free((*postPtr)->mail_array[index]);
     (*postPtr)->mail_array[index] = NULL;
 
     (*count_mail)--;
-
-    if (*count_mail == 0) {
-        (*postPtr)->mail_array = NULL;
-    }
 
     return OK;
 }
@@ -709,12 +706,21 @@ ERROR delete_Post(Post** postPtr, int* count_mail) {
 
     ERROR error = OK;
 
-    for (int i = 0; i < *count_mail; i++) {
+    int count = *count_mail;
+
+    for (int i = 0; i < count; i++) {
         error = delete_Mail(postPtr, i, count_mail);
 
         if (error != OK) {
             return error;
         }
+    }
+
+    free((*postPtr)->mail_array);
+    (*postPtr)->mail_array = NULL;
+
+    if (*count_mail == 0) {
+        (*postPtr)->mail_array = NULL;
     }
 
     destroy_String(&(*postPtr)->post_officePtr->postal_codePtr);

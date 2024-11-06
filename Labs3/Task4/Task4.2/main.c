@@ -311,6 +311,7 @@ int main() {
                 }
                 break;
             case 6: {
+                delete_Post(&postPtr, &mail_count);
                 exit = 0;
                 break;
             }
@@ -320,8 +321,6 @@ int main() {
             }
         }
     }
-
-    delete_Post(&postPtr, &mail_count);
 
     return OK;
 }
