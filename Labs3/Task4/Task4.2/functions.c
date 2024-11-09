@@ -340,6 +340,28 @@ ERROR create_Address(Address** resultPtr, char* city, char* street, int house_nu
 
 }
 
+ERROR delete_Address(Address** addressPtr) {
+    if (addressPtr == NULL || *addressPtr == NULL) {
+        return INVALID_INPUT;
+    }
+
+    destroy_String(&(*addressPtr)->streetPtr);
+    (*addressPtr)->streetPtr = NULL;
+
+    destroy_String(&(*addressPtr)->cityPtr);
+    (*addressPtr)->cityPtr = NULL;
+
+    destroy_String(&(*addressPtr)->framePtr);
+    (*addressPtr)->framePtr = NULL;
+
+    destroy_String(&(*addressPtr)->postal_codePtr);
+    (*addressPtr)->postal_codePtr = NULL;
+    
+    free(*addressPtr);
+    (*addressPtr) = NULL;
+
+    return OK;
+}
 
 
 ERROR create_Mail(Mail** mailPtr, Address** addressPtr, float parcel_weight, char* postal_id, char* creation_time, char* delivery_time) {
@@ -353,15 +375,19 @@ ERROR create_Mail(Mail** mailPtr, Address** addressPtr, float parcel_weight, cha
         (*addressPtr)->streetPtr->StringPtr == NULL || 
         (*addressPtr)->framePtr->StringPtr == NULL || 
         (*addressPtr)->postal_codePtr->StringPtr == NULL) {
+        delete_Address(addressPtr);
         return INVALID_INPUT;
     } else if (postal_id == NULL || postal_id[0] == '\0') {
+        delete_Address(addressPtr);
         return INVALID_INPUT;
     } else if (creation_time == NULL || creation_time[0] == '\0') {
+        delete_Address(addressPtr);
         return INVALID_INPUT;
     } else if (delivery_time == NULL || delivery_time[0] == '\0') {
+        delete_Address(addressPtr);
         return INVALID_INPUT;
     } else if (parcel_weight <= 0) {
-        printf("11");
+        delete_Address(addressPtr);
         return INVALID_INPUT;
     }
 
@@ -370,12 +396,14 @@ ERROR create_Mail(Mail** mailPtr, Address** addressPtr, float parcel_weight, cha
     *mailPtr = (Mail*)malloc(sizeof(Mail));
 
     if (*mailPtr == NULL) {
+        delete_Address(addressPtr);
         return INVALID_MEMORY;
     }
 
     error = valid_postal_code(postal_id);
 
     if (error != OK) {
+        delete_Address(addressPtr);
         printf("valid_postal_code");
         return INVALID_INPUT;
     }
@@ -383,6 +411,7 @@ ERROR create_Mail(Mail** mailPtr, Address** addressPtr, float parcel_weight, cha
     error = valid_time(creation_time);
 
     if (error != OK) {
+        delete_Address(addressPtr);
         printf("valid_time1");
         return error;
     }
@@ -390,27 +419,32 @@ ERROR create_Mail(Mail** mailPtr, Address** addressPtr, float parcel_weight, cha
     error = valid_time(delivery_time);
 
     if (error != OK) {
+        delete_Address(addressPtr);
         printf("valid_time2");
         return error;
     }
 
     error = create_String(postal_id, &((*mailPtr)->postal_idPtr));
 
-    if (error != OK) {                                              // Очистить память
+    if (error != OK) {     
+        delete_Address(addressPtr);                                         
         return error;
     } else if ((*mailPtr)->postal_idPtr->String_len != 14) {
+        delete_Address(addressPtr);
         return INVALID_INPUT;
     }
 
     error = create_String(creation_time, &((*mailPtr)->creation_timePtr));
 
-    if (error != OK) {                                              // Очистить память
+    if (error != OK) {                 
+        delete_Address(addressPtr);                            
         return error;
     }
 
     error = create_String(delivery_time, &((*mailPtr)->delivery_timePtr));
 
-    if (error != OK) {                                              // Очистить память
+    if (error != OK) {      
+        delete_Address(addressPtr);                                      
         return error;
     } 
 
@@ -633,30 +667,7 @@ ERROR binary_search(Post** postPtr, char* postalId, int count_mail, int* index) 
 
 ERROR delete_Mail(Post** postPtr, int index, int* count_mail) {
 
-    if (postPtr == NULL || *postPtr == NULL || (*postPtr)->post_officePtr == NULL ||
-        (*postPtr)->post_officePtr->cityPtr == NULL ||
-        (*postPtr)->post_officePtr->framePtr == NULL ||
-        (*postPtr)->post_officePtr->postal_codePtr == NULL ||
-        (*postPtr)->post_officePtr->streetPtr == NULL ||
-        (*postPtr)->post_officePtr->cityPtr->StringPtr == NULL ||
-        (*postPtr)->post_officePtr->framePtr->StringPtr == NULL ||
-        (*postPtr)->post_officePtr->postal_codePtr->StringPtr == NULL ||
-        (*postPtr)->post_officePtr->streetPtr->StringPtr == NULL) {
-        return INVALID_INPUT;
-    } else if ((*postPtr)->mail_array[index]->creation_timePtr == NULL ||
-               (*postPtr)->mail_array[index]->delivery_timePtr == NULL ||
-               (*postPtr)->mail_array[index]->postal_idPtr == NULL ||
-               (*postPtr)->mail_array[index]->creation_timePtr->StringPtr == NULL ||
-               (*postPtr)->mail_array[index]->delivery_timePtr->StringPtr == NULL ||
-               (*postPtr)->mail_array[index]->postal_idPtr->StringPtr == NULL ||
-               (*postPtr)->mail_array[index]->recipients_addressPtr->cityPtr == NULL ||
-               (*postPtr)->mail_array[index]->recipients_addressPtr->streetPtr == NULL ||
-               (*postPtr)->mail_array[index]->recipients_addressPtr->framePtr == NULL ||
-               (*postPtr)->mail_array[index]->recipients_addressPtr->postal_codePtr == NULL ||
-               (*postPtr)->mail_array[index]->recipients_addressPtr->cityPtr->StringPtr == NULL ||
-               (*postPtr)->mail_array[index]->recipients_addressPtr->streetPtr->StringPtr == NULL ||
-               (*postPtr)->mail_array[index]->recipients_addressPtr->framePtr->StringPtr == NULL ||
-               (*postPtr)->mail_array[index]->recipients_addressPtr->postal_codePtr->StringPtr == NULL) {
+    if (postPtr == NULL || *postPtr == NULL) {
         return INVALID_INPUT;
     }
     destroy_String(&(*postPtr)->mail_array[index]->creation_timePtr);
@@ -691,37 +702,28 @@ ERROR delete_Mail(Post** postPtr, int index, int* count_mail) {
 
 ERROR delete_Post(Post** postPtr, int* count_mail) {
 
-    if (postPtr == NULL || *postPtr == NULL || (*postPtr)->post_officePtr == NULL ||
-        (*postPtr)->post_officePtr->cityPtr == NULL ||
-        (*postPtr)->post_officePtr->framePtr == NULL ||
-        (*postPtr)->post_officePtr->postal_codePtr == NULL ||
-        (*postPtr)->post_officePtr->streetPtr == NULL ||
-        (*postPtr)->post_officePtr->cityPtr->StringPtr == NULL ||
-        (*postPtr)->post_officePtr->framePtr->StringPtr == NULL ||
-        (*postPtr)->post_officePtr->postal_codePtr->StringPtr == NULL ||
-        (*postPtr)->post_officePtr->streetPtr->StringPtr == NULL ||
-        (*postPtr)->mail_array == NULL) {
+    if (postPtr == NULL || *postPtr == NULL) {
         return INVALID_INPUT;
     } 
 
-    ERROR error = OK;
 
     int count = *count_mail;
 
-    for (int i = 0; i < count; i++) {
-        error = delete_Mail(postPtr, i, count_mail);
+    if (count != 0) {
 
-        if (error != OK) {
-            return error;
+        for (int i = 0; i < count; i++) {
+            delete_Mail(postPtr, i, count_mail);
+
         }
-    }
 
-    free((*postPtr)->mail_array);
-    (*postPtr)->mail_array = NULL;
-
-    if (*count_mail == 0) {
+        free((*postPtr)->mail_array);
         (*postPtr)->mail_array = NULL;
+
     }
+
+    // if (*count_mail == 0) {
+    //     (*postPtr)->mail_array = NULL;
+    // }
 
     destroy_String(&(*postPtr)->post_officePtr->postal_codePtr);
     (*postPtr)->post_officePtr->postal_codePtr = NULL;

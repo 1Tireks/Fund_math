@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
         return INVALID_INPUT;
     }
 
-    printf("%c %c %c %c %c\n", studentsPtr[0].gradesPtr[0], studentsPtr[0].gradesPtr[1], studentsPtr[0].gradesPtr[2], studentsPtr[0].gradesPtr[3], studentsPtr[0].gradesPtr[4]);
+    //printf("%c %c %c %c %c\n", studentsPtr[0].gradesPtr[0], studentsPtr[0].gradesPtr[1], studentsPtr[0].gradesPtr[2], studentsPtr[0].gradesPtr[3], studentsPtr[0].gradesPtr[4]);
 
     int choice, exit = 1;
 
@@ -124,7 +124,7 @@ int main(int argc, char* argv[]) {
                 if (find) {
                     double summ_Student_res = 0;
                     for(int j = 0; j < 5; j++) {
-                        printf("Grade %d: %u\\n", j, studentsPtr[index].gradesPtr[j]);
+                        //printf("Grade %d: %u\\n", j, studentsPtr[index].gradesPtr[j]);
                         summ_Student_res += (double)(studentsPtr[index].gradesPtr[j] - '0');
                     }
                     summ_Student_res = summ_Student_res / 5;
@@ -183,7 +183,7 @@ int main(int argc, char* argv[]) {
                         }
                         summ_Student_res /= 5;
 
-                        printf("%s %s %s %f", studentsPtr[index].firstNamePtr, studentsPtr[index].secondNamePtr, studentsPtr[index].groupPtr, summ_Student_res);
+                        printf("%s %s %s %f\n", studentsPtr[index].firstNamePtr, studentsPtr[index].secondNamePtr, studentsPtr[index].groupPtr, summ_Student_res);
 
 
 
@@ -229,16 +229,17 @@ int main(int argc, char* argv[]) {
                     return INVALID_INPUT;
                 }
 
+                double summ_Student_res = 0.0;
+
                 if (find) {
                     printf("Найденные студенты\n");
-                    while (!strcmp(secondName, studentsPtr[index].firstNamePtr)) {
-                        double summ_Student_res = 0;
+                    while (!strcmp(secondName, studentsPtr[index].secondNamePtr)) {
                         for (int j = 0; j < 5; j++) {
                             summ_Student_res += studentsPtr[index].gradesPtr[j] - '0';
                         }
                         summ_Student_res /= 5;
 
-                        printf("%s %s %s %f", studentsPtr[index].firstNamePtr, studentsPtr[index].secondNamePtr, studentsPtr[index].groupPtr, summ_Student_res);
+                        printf("%s %s %s %f\n", studentsPtr[index].firstNamePtr, studentsPtr[index].secondNamePtr, studentsPtr[index].groupPtr, summ_Student_res);
 
 
 
@@ -261,6 +262,7 @@ int main(int argc, char* argv[]) {
 
                         }
                         index++;
+                        summ_Student_res = 0.0;
                     }
                 } else {
                     printf("Нет такого\n");
@@ -287,13 +289,13 @@ int main(int argc, char* argv[]) {
                 if (find) {
                     printf("Найденные студенты\n");
                     while (!strcmp(group, studentsPtr[index].firstNamePtr)) {
-                        double summ_Student_res = 0;
+                        double summ_Student_res = 0.0;
                         for (int j = 0; j < 5; j++) {
                             summ_Student_res += studentsPtr[index].gradesPtr[j] - '0';
                         }
                         summ_Student_res /= 5;
 
-                        printf("%s %s %s %f", studentsPtr[index].firstNamePtr, studentsPtr[index].secondNamePtr, studentsPtr[index].groupPtr, summ_Student_res);
+                        printf("%s %s %s %f\n", studentsPtr[index].gradesPtr, studentsPtr[index].gradesPtr, studentsPtr[index].groupPtr, summ_Student_res);
 
 
 
@@ -354,16 +356,9 @@ int main(int argc, char* argv[]) {
                 break;
             }
 
-
-
         }
 
-
     }
-
-
-
-
 
     fclose(input);
 
