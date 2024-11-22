@@ -10,6 +10,7 @@ class binary_int {
     public:
         binary_int();
         binary_int(int);
+        ~binary_int(){};
         binary_int operator-() const;
         binary_int& operator++();
         binary_int operator++(int);
@@ -243,6 +244,5 @@ int main() {
 
     auto [high, low] = n.split();
     std::cout << "High bits: " << high << ", Low bits: " << low << "\n";
-
 
 }
