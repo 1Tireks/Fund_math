@@ -10,18 +10,17 @@ class binary_int {
     public:
         binary_int();
         binary_int(int);
-        ~binary_int(){};
         binary_int operator-() const;
         binary_int& operator++();
         binary_int operator++(int);
         binary_int& operator--();
         binary_int operator--(int);
-        binary_int& operator+=(const binary_int);
-        binary_int operator+(const binary_int) const;
-        binary_int& operator-=(const binary_int);
-        binary_int operator-(const binary_int) const;
-        binary_int& operator*=(const binary_int);
-        binary_int operator*(const binary_int) const ;
+        binary_int& operator+=(const binary_int&);
+        binary_int operator+(const binary_int&) const;
+        binary_int& operator-=(const binary_int&);
+        binary_int operator-(const binary_int&) const;
+        binary_int& operator*=(const binary_int&);
+        binary_int operator*(const binary_int&) const ;
         binary_int& operator<<=(int);
         binary_int operator<<(int) const;
         binary_int& operator>>=(int);
@@ -135,34 +134,34 @@ binary_int binary_int::operator--(int) {
     return temp;
 }
 
-binary_int& binary_int::operator+=(const binary_int other) {
+binary_int& binary_int::operator+=(const binary_int& other) {
     value = binary_add(value, other.value);
     return *this;
 }
 
-binary_int binary_int::operator+(const binary_int other) const {
+binary_int binary_int::operator+(const binary_int& other) const {
     binary_int temp = *this;
     temp.value = binary_add(value, other.value);
     return temp;
 }
 
-binary_int& binary_int::operator-=(const binary_int other) {
+binary_int& binary_int::operator-=(const binary_int& other) {
     value = binary_add(value, binary_add(~(other.value), 1));
     return *this;
 }
 
-binary_int binary_int::operator-(const binary_int other) const {
+binary_int binary_int::operator-(const binary_int& other) const {
     binary_int temp = *this;
     temp.value = binary_add(value, binary_add(~(other.value), 1));
     return temp;
 }
 
-binary_int& binary_int::operator*=(const binary_int other) {
+binary_int& binary_int::operator*=(const binary_int& other) {
     value = binary_multiply(value, other.value);
     return *this;
 }
 
-binary_int binary_int::operator*(const binary_int other) const {
+binary_int binary_int::operator*(const binary_int& other) const {
     binary_int temp = *this;
     temp.value = binary_multiply(value, other.value);
     return temp;
@@ -213,8 +212,11 @@ void binary_int::printBinInt() {
 int main() {
 
     binary_int n(2578629), m(9);
+    binary_int n2 = n;
 
     (n).printBinInt();
+    (n2).printBinInt();
+    (n - n2).printBinInt();
     (-n).printBinInt();
     (n).printBinInt();
     (n--).printBinInt();
