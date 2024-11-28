@@ -72,23 +72,6 @@ int binary_int::decrement(int a) const {
     return a;
 }
 
-int decrement(int a) {
-
-    int carry = 1;
-
-    while(carry) {
-
-        int result = a ^ carry;
-
-        carry = (~(a) & carry) << 1;
-
-        a = result;
-
-    }
-
-    return a;
-}
-
 int binary_int::binary_multiply(int a, int b) const {
 
     int res = 0;
@@ -108,26 +91,26 @@ binary_int binary_int::operator-() const {
     return binary_int(binary_add(~value, 1));
 }
 
-// Префиксный инкремент
+// Постфиксный инкремент
 binary_int& binary_int::operator++() {
     value = binary_add(value, 1);
     return *this;
 }
 
-// Постфиксный инкремент
+// Префиксный инкремент
 binary_int binary_int::operator++(int) {
     binary_int temp = *this;
     value = binary_add(value, 1);
     return temp;
 }
 
-// Префиксный декремент
+// Постфиксный декремент
 binary_int& binary_int::operator--() {
     value = decrement(value);
     return *this;
 }
 
-// Постфиксный декремент
+// Префиксный декремент
 binary_int binary_int::operator--(int) {
     binary_int temp = *this;
     value = decrement(value);
@@ -199,7 +182,7 @@ std::ostream& operator<<(std::ostream& os, const binary_int& obj) {
     int i = 31;
     while (i >= 0) {
         os << ((obj.value >> i) & 1);
-        i = decrement(i);
+        i = obj.decrement(i);
     }
     return os;
 }
